@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory name="">
+  <!-- hibernate dialect -->
+  <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+  <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+  <property name="hibernate.connection.url">jdbc:postgresql://stko-poi.geog.ucsb.edu:5432/gis</property>
+  <property name="hibernate.connection.username">poi</property>
+  <property name="hibernate.connection.password">poib4se</property>
+  <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+  <!-- Automatic schema creation (begin) === -->
+  <property name="hibernate.hbm2ddl.auto">create</property>
+  <!-- Simple memory-only cache -->
+  <property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+  <!-- Enable Hibernate's automatic session context management -->
+  <property name="current_session_context_class">thread</property>
+  <!-- ############################################ 
+ # mapping files with external dependencies # 
+ ############################################ -->
+  <mapping resource="poi.hbm.xml"/>
+ </session-factory>
+</hibernate-configuration>
