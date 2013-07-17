@@ -23,14 +23,14 @@ import edu.ucsb.geog.poi;
 /**
  * Servlet implementation class Waikikamukau
  */
-@WebServlet("/Waikikamukau")
-public class Waikikamukau extends HttpServlet {
+@WebServlet("/Nearby")
+public class Nearby extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Waikikamukau() {
+    public Nearby() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -49,7 +49,7 @@ public class Waikikamukau extends HttpServlet {
         	queryNearby(session, response, latitude, longitude);
         } else {
         	PrintWriter out = response.getWriter();
-        	out.println("Please provide latitude and longitude parameters");
+        	out.println("[{\"Error\":\"Please provide latitude and longitude parameters\"}]");
         }
 	}
 
