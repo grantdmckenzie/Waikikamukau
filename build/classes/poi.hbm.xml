@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
 
-    <class name="edu.ucsb.geog.poi" table="poi">
+    <class name="edu.ucsb.geog.poi" table="openpoi">
 
         <id name="id" column="id">
             <generator class="native" />
@@ -26,6 +26,6 @@
     </class>
     <sql-query name="callNearbyStoredProcedure">
 		<return alias="w_nearby" class="edu.ucsb.geog.poi"/>
-		<![CDATA[select * from w_nearby(:lat,:lng)]]>
+		<![CDATA[select * from w_nearby(:lng,:lat)]]>
     </sql-query>
 </hibernate-mapping>
