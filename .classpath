@@ -23,5 +23,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jta-1.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/postgresql-9.1-903.jdbc3.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/home/grantdmckenzie/Documents/Libraries/mongo-2.10.1.jar"/>
+	<classpathentry kind="lib" path="/home/grantdmckenzie/Documents/Libraries/org.json-20120521.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

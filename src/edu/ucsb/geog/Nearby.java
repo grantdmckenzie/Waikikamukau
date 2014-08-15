@@ -41,7 +41,7 @@ public class Nearby extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Session session = SessionFactoryUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
-        response.setContentType("application/json");
+        
         
         if(request.getParameterMap().containsKey("lat") && request.getParameterMap().containsKey("lng")) {
         	Float latitude = Float.valueOf(request.getParameter("lat"));
@@ -56,32 +56,51 @@ public class Nearby extends HttpServlet {
 	private static void queryNearby(Session session, HttpServletResponse response, Float latitude, Float longitude) throws IOException {
     	
         Query query = session.getNamedQuery("callNearbyStoredProcedure"); 
-        
+        response.setHeader("Content-Type", "application/json");
+        response.setHeader("Content-Encoding", "UTF-8");
+       
         // Sample query parameters: lat=-119.8005785&lng=34.4361521
         query.setParameter("lng", longitude);
         query.setParameter("lat", latitude);
         List result = query.list(); 
         JSONArray pArray = new JSONArray();
+        JSONObject pJson = new JSONObject();
         PrintWriter out = response.getWriter();
         for(int i=0; i<result.size(); i++){
         	poi p = (poi)result.get(i);
         	JSONObject obj = new JSONObject();
+        	obj.put("id",p.getId());
         	obj.put("name",p.getName());
         	obj.put("lat",p.getLat());
         	obj.put("lng",p.getLng());
         	obj.put("distance",p.getDistance());
         	pArray.add(obj);
         }
+        pJson.put("response", pArray);
         
-        JSONValue.writeJSONString(pArray, out);
-
+        // JSONValue.writeJSONString(pJson, out);
+        response.setContentType("application/json");
+        PrintWriter done = response.getWriter();
+	     // Assuming your json object is **jsonObject**, perform the following, it will return your json object  
+        done.print(pJson);
+        done.flush();
     }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		Session session = SessionFactoryUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        
+        if(request.getParameterMap().containsKey("lat") && request.getParameterMap().containsKey("lng")) {
+        	Float latitude = Float.valueOf(request.getParameter("lat"));
+        	Float longitude = Float.valueOf(request.getParameter("lng"));
+        	queryNearby(session, response, latitude, longitude);
+        } else {
+        	PrintWriter out = response.getWriter();
+        	out.println("[{\"Error\":\"Please provide latitude and longitude parameters\"}]");
+        }
 	}
 
 }
