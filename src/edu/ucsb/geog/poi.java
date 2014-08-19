@@ -1,16 +1,19 @@
 package edu.ucsb.geog;
 
+import java.math.BigInteger;
+
 public class poi implements java.io.Serializable {
-	String id;
+	BigInteger id;
     String name;
+    int cat;
     float lat;
     float lng;
     float distance;
 
-   public String getId() {
+   public BigInteger getId() {
         return id;
     }
-    private void setId(String id) {
+    private void setId(BigInteger id) {
         this.id = id;
     }
     public String getName() {
@@ -18,6 +21,12 @@ public class poi implements java.io.Serializable {
     }
     public void setName(String name) {
         this.name = name;
+    }
+    public int getCat() {
+        return cat;
+    }
+    public void setCat(int cat) {
+        this.cat = cat;
     }
     public float getLat() {
         return lat;

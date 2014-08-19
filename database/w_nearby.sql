@@ -1,8 +1,9 @@
 DROP TYPE w_loc CASCADE;
 CREATE TYPE w_loc AS
 (
-  id varchar(255),
+  id bigint,
   name varchar(500),
+  cat int,
   lat double precision,
   lng double precision,
   distance double precision
@@ -21,7 +22,7 @@ d_lng ALIAS FOR $1;
 d_lat ALIAS FOR $2;
 
 BEGIN  
- FOR rec IN (select w_id, name, ST_Y(ST_GeomFromText(ST_AsText(geog))), ST_X(ST_GeomFromText(ST_AsText(geog))), st_distance(geog, st_geographyfromtext('POINT('||d_lng||' '||d_lat||')')) as dist from poibase where name is not null and ST_DWithin(geog, st_geographyfromtext('POINT('||d_lng||' '||d_lat||')'), 1000) order by dist limit 60) LOOP  
+ FOR rec IN (select w_id, name, t_id, lat, lng, st_distance(geog, st_geographyfromtext('POINT('||d_lng||' '||d_lat||')')) as dist from poibase where ST_DWithin(geog, st_geographyfromtext('POINT('||d_lng||' '||d_lat||')'), 1000) order by dist limit 60) LOOP  
   RETURN NEXT rec;  
  END LOOP;  
 END;  

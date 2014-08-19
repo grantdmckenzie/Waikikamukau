@@ -71,9 +71,10 @@ public class Nearby extends HttpServlet {
         	JSONObject obj = new JSONObject();
         	obj.put("id",p.getId());
         	obj.put("name",p.getName());
+        	obj.put("cat",p.getCat());
         	obj.put("lat",p.getLat());
         	obj.put("lng",p.getLng());
-        	obj.put("distance",p.getDistance());
+        	obj.put("dist",p.getDistance());
         	pArray.add(obj);
         }
         pJson.put("response", pArray);
