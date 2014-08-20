@@ -78,7 +78,10 @@ public class GetAttributes extends HttpServlet {
     		DBCollection coll = db.getCollection("development");
     		
     		BasicDBObject query = new BasicDBObject("id", id);
-    		DBCursor cursor = coll.find(query);
+    		BasicDBObject proj = new BasicDBObject("_id", 0);
+    		proj.append("id", 0);
+    		
+    		DBCursor cursor = coll.find(query, proj);
     		
     		JSONArray pArray = new JSONArray();
             JSONObject pJson = new JSONObject();
@@ -90,17 +93,7 @@ public class GetAttributes extends HttpServlet {
     		        
     		        try {
 						JSONObject d = new JSONObject(entity);
-						Iterator<?> keys = d.keys();
-				        while( keys.hasNext() ){
-				            String key = (String)keys.next();
-				            if (!key.equals("_id") && !key.equals("id")) {
-				            	String val = (String)d.get(key);
-				            	// System.out.println(key+" "+val);
-				            	JSONObject obj = new JSONObject();
-				            	obj.put(key, val);
-				            	pArray.add(obj);
-				            }
-				        }
+						pArray.add(d);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -117,7 +110,7 @@ public class GetAttributes extends HttpServlet {
         		
         } else {
         	PrintWriter out = res.getWriter();
-        	out.println("[{\"Error\":\"Please provide an ID parameter\"}]");
+        	out.println("{\"response\":{\"status\":406, \"message\":\"Please provide an ID parameter.\"}}");
         }
 		
 	}

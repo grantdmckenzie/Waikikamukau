@@ -2,6 +2,8 @@ package edu.ucsb.geog;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -50,47 +52,45 @@ public class UpdateAttributes extends HttpServlet {
 	}
 	
 	public void handleRequest(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		// PrintWriter out = res.getWriter();
+		// Specify output headers (probably overkill)
     	res.setHeader("Content-Type", "application/json");
         res.setHeader("Content-Encoding", "UTF-8");
         res.setContentType("application/json");
+        
+        // A POI ID is essential
 		if(req.getParameterMap().containsKey("id")) {
         	String id = String.valueOf(req.getParameter("id"));
-        	
-        	
-            
+        	String time = String.valueOf(new Date().getTime()/1000);
+       	 	
+        	// Loop over all params for key value pairs
     		Enumeration<String> parameterNames = req.getParameterNames();
     		Map<String, String> map = new HashMap<String, String>();
     		while (parameterNames.hasMoreElements()) {
 
     			String paramName = parameterNames.nextElement();
     			if (!paramName.equals("id")) {
-	    			//out.write(paramName);
-	
 	    			String[] paramValues = req.getParameterValues(paramName);
 	    			map.put(paramName, paramValues[0]);
-	    			/*for (int i = 0; i < paramValues.length; i++) {
-	    				String paramValue = paramValues[i];
-	    				//out.write("\t" + paramValue);
-	    				//out.write("\n");
-	    				map.put(paramName, paramValue);
-	    			}*/
     			}
     		}
     		
+    		// Make sure there is some data
     		if (map.size() > 0) {
-    			
-    			
+    			// Set up MongoDB connection and collection
     			MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
         		DB db = mongoClient.getDB( "poibase" );
         		DBCollection coll = db.getCollection("development");
+        		
+        		// Create new Document (all documents should have an id and a timestamp at a minimum)
         		BasicDBObject doc = new BasicDBObject("id", id);
+        		doc.append("ts", time);
+        		
+        		// Loop through all map entries
     			for (Map.Entry<String, String> entry : map.entrySet()) {
-    				String key = entry.getKey();
-    				String value = entry.getValue();
-    				doc.append(key, value);
+    				doc.append(entry.getKey(), entry.getValue());
     			}
     			try {
+    				// Insert some wonderful data in to the NoSQL database
     				coll.insert(doc, WriteConcern.ACKNOWLEDGED);
     	        } catch (MongoException e) {
     	            e.printStackTrace();
@@ -98,20 +98,12 @@ public class UpdateAttributes extends HttpServlet {
     			
     		} else {
     			PrintWriter out = res.getWriter();
-            	out.println("[{\"Error\":\"Please provide an additional attribute (other than ID) \"}]");
+            	out.println("{\"response\":{\"status\":406, \"message\":\"Please provide an additional attribute (other than ID).\"}}");
     		}
-    		// out.write(""+map.size());
-    		//out.close();
 
-        	/*MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
-    		DB db = mongoClient.getDB( "poibase" );
-    		DBCollection coll = db.getCollection("development");
-    		BasicDBObject doc = new BasicDBObject("name", "MongoDB")
-    		        .append("type", "database");
-    		coll.insert(doc);*/
         } else {
         	PrintWriter out = res.getWriter();
-        	out.println("[{\"Error\":\"Please provide an ID parameter and at least one other attribute\"}]");
+        	out.println("{\"response\":{\"status\":406, \"message\":\"Please provide an ID parameter and at least one other attribute.\"}}");
         }
 		
 	}
