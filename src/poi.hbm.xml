@@ -32,6 +32,6 @@
     </class>
     <sql-query name="callNearbyStoredProcedure">
 		<return alias="w_nearby" class="edu.ucsb.geog.poi"/>
-		<![CDATA[select * from w_nearby(:lng,:lat)]]>
+		<![CDATA[select * from w_nearby(:lng,:lat,:q)]]>
     </sql-query>
 </hibernate-mapping>

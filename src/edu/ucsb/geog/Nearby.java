@@ -42,17 +42,18 @@ public class Nearby extends HttpServlet {
         session.beginTransaction();
         
         
-        if(request.getParameterMap().containsKey("lat") && request.getParameterMap().containsKey("lng")) {
+        if(request.getParameterMap().containsKey("lat") && request.getParameterMap().containsKey("lng") && request.getParameterMap().containsKey("q")) {
         	Float latitude = Float.valueOf(request.getParameter("lat"));
         	Float longitude = Float.valueOf(request.getParameter("lng"));
-        	queryNearby(session, response, latitude, longitude);
+        	String search = String.valueOf(request.getParameter("q"));
+        	queryNearby(session, response, latitude, longitude, search);
         } else {
         	PrintWriter out = response.getWriter();
         	out.println("[{\"Error\":\"Please provide latitude and longitude parameters\"}]");
         }
 	}
 
-	private static void queryNearby(Session session, HttpServletResponse response, Float latitude, Float longitude) throws IOException {
+	private static void queryNearby(Session session, HttpServletResponse response, Float latitude, Float longitude, String searchstring) throws IOException {
     	
         Query query = session.getNamedQuery("callNearbyStoredProcedure"); 
         response.setHeader("Content-Type", "application/json");
@@ -61,6 +62,8 @@ public class Nearby extends HttpServlet {
         // Sample query parameters: lng=-119.8005785&lat=34.4361521
         query.setParameter("lng", longitude);
         query.setParameter("lat", latitude);
+        query.setParameter("q", searchstring);
+        
         List result = query.list(); 
         JSONArray pArray = new JSONArray();
         JSONObject pJson = new JSONObject();
@@ -94,10 +97,11 @@ public class Nearby extends HttpServlet {
 		Session session = SessionFactoryUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         
-        if(request.getParameterMap().containsKey("lat") && request.getParameterMap().containsKey("lng")) {
+        if(request.getParameterMap().containsKey("lat") && request.getParameterMap().containsKey("lng") && request.getParameterMap().containsKey("q")) {
         	Float latitude = Float.valueOf(request.getParameter("lat"));
         	Float longitude = Float.valueOf(request.getParameter("lng"));
-        	queryNearby(session, response, latitude, longitude);
+        	String search = String.valueOf(request.getParameter("q"));
+        	queryNearby(session, response, latitude, longitude, search);
         } else {
         	PrintWriter out = response.getWriter();
         	out.println("[{\"Error\":\"Please provide latitude and longitude parameters\"}]");
