@@ -91,8 +91,10 @@ public class UpdateAttributes extends HttpServlet {
     			}
     			try {
     				// Insert some wonderful data in to the NoSQL database
-    				coll.insert(doc, WriteConcern.ACKNOWLEDGED);
-    	        } catch (MongoException e) {
+    				coll.insert(doc, WriteConcern.SAFE);
+    				
+    				
+    			} catch (MongoException e) {
     	            e.printStackTrace();
     	        }
     			

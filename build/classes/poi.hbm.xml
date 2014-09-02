@@ -26,6 +26,9 @@
         <property name="distance">
             <column name="distance" length="16" not-null="true" />
         </property>
+        <property name="uri">
+            <column name="uri" length="16" not-null="false" />
+        </property>
     </class>
     <sql-query name="callNearbyStoredProcedure">
 		<return alias="w_nearby" class="edu.ucsb.geog.poi"/>

@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -59,7 +58,7 @@ public class Nearby extends HttpServlet {
         response.setHeader("Content-Type", "application/json");
         response.setHeader("Content-Encoding", "UTF-8");
        
-        // Sample query parameters: lat=-119.8005785&lng=34.4361521
+        // Sample query parameters: lng=-119.8005785&lat=34.4361521
         query.setParameter("lng", longitude);
         query.setParameter("lat", latitude);
         List result = query.list(); 
@@ -75,6 +74,7 @@ public class Nearby extends HttpServlet {
         	obj.put("lat",p.getLat());
         	obj.put("lng",p.getLng());
         	obj.put("dist",p.getDistance());
+        	obj.put("uri",p.getUri());
         	pArray.add(obj);
         }
         pJson.put("response", pArray);

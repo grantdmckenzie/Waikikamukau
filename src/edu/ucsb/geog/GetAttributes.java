@@ -2,11 +2,6 @@ package edu.ucsb.geog;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,10 +16,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoException;
-import com.mongodb.WriteConcern;
 
 /**
  * Servlet implementation class GetAttributes
@@ -92,10 +84,10 @@ public class GetAttributes extends HttpServlet {
     		        String entity = cursor.next().toString();
     		        
     		        try {
-						JSONObject d = new JSONObject(entity);
-						pArray.add(d);
+    		        	// Clean up the data coming out of the database.
+						AttributeEntry d = new AttributeEntry(new JSONObject(entity));
+						pArray.add(d.getObject());
 					} catch (JSONException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
     		    }

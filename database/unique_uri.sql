@@ -1,0 +1,1 @@
+SELECT concat(w_id,'-',REPLACE(regexp_replace(trim(name), '[[:punct:]]', ''), ' ', '-')) as uri from poibase;
