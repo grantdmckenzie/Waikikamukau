@@ -12,3 +12,5 @@ BEGIN
  END LOOP;
  RETURN output;
 END $$
+
+alter table poibase add column url default stringify_bigint(nextval('poibase_w_id_int_seq'::regclass));

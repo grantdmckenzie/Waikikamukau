@@ -2,9 +2,7 @@ package edu.ucsb.geog;
 
 
 public class poi implements java.io.Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	String id;
     String name;
@@ -13,6 +11,7 @@ public class poi implements java.io.Serializable {
     float lng;
     float distance;
     String uri;
+    String provider;
 
    public String getId() {
         return id;
@@ -55,5 +54,11 @@ public class poi implements java.io.Serializable {
     }
     public void setUri(String uri) {
         this.uri = uri;
+    }
+    public String getProvider() {
+        return provider;
+    }
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 }

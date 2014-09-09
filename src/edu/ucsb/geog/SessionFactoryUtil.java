@@ -22,5 +22,9 @@ public class SessionFactoryUtil {
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
+    public static void shutdown() {
+        // Close caches and connection pools
+        getSessionFactory().close();
+    }
 
 }

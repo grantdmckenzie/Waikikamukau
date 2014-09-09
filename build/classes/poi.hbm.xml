@@ -5,17 +5,15 @@
 
 <hibernate-mapping>
 
-    <class name="edu.ucsb.geog.poi" table="openpoi">
+    <class name="edu.ucsb.geog.poi" table="poibase">
 
-        <id name="id" column="id">
-            <generator class="native" />
-        </id>
+        <id name="id" column="p_id" />
 		
         <property name="name">
             <column name="name" length="16" not-null="true" />
         </property>
         <property name="cat">
-            <column name="cat" length="16" not-null="true" />
+            <column name="t_id" length="16" not-null="true" />
         </property>
         <property name="lat">
             <column name="lat" length="16" not-null="true" />
@@ -23,11 +21,14 @@
         <property name="lng">
             <column name="lng" length="16" not-null="true" />
         </property>
-        <property name="distance">
-            <column name="distance" length="16" not-null="true" />
+        <property name="distance"  insert="false" update="false">
+            <column name="distance" length="16" not-null="false"/>
         </property>
         <property name="uri">
             <column name="uri" length="16" not-null="false" />
+        </property>
+        <property name="provider">
+            <column name="provider" length="16" not-null="false" />
         </property>
     </class>
     <sql-query name="callNearbyStoredProcedure">
