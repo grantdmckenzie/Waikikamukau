@@ -4,20 +4,26 @@ package edu.ucsb.geog;
 public class poi implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-	String id;
+	String w_id;
+	int w_id_int;
     String name;
     int cat;
     float lat;
     float lng;
     float distance;
     String uri;
-    String provider;
 
-   public String getId() {
-        return id;
+    public int getW_id_int() {
+        return w_id_int;
     }
-    private void setId(String id) {
-        this.id = id;
+    private void setW_id_int(int id) {
+        this.w_id_int = id;
+    }
+    public String getW_id() {
+        return w_id;
+    }
+    private void setW_id(String id) {
+        this.w_id = id;
     }
     public String getName() {
         return name;
@@ -54,11 +60,5 @@ public class poi implements java.io.Serializable {
     }
     public void setUri(String uri) {
         this.uri = uri;
-    }
-    public String getProvider() {
-        return provider;
-    }
-    public void setProvider(String provider) {
-        this.provider = provider;
     }
 }

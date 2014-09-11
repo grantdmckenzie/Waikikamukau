@@ -1,7 +1,8 @@
 DROP TYPE w_loc CASCADE;
 CREATE TYPE w_loc AS
 (
-  id varchar(32),
+  w_id varchar(32),
+  w_id_int int,
   name varchar(500),
   cat int,
   lat double precision,
@@ -24,14 +25,14 @@ d_lat ALIAS FOR $2;
 
 BEGIN  
  IF length($3) > 0 THEN
-  FOR rec IN (select w_id, name, t_id, lat, lng, round(st_distance(geog, st_geographyfromtext('POINT('||d_lng||' '||d_lat||')'))*100)/100 as dist, concat(w_id,'-',REPLACE(regexp_replace(trim(lower(name)), '[[:punct:]]', '','g'), ' ', '-')) as uri 
+  FOR rec IN (select w_id, w_id_int, name, cat, lat, lng, round(st_distance(geog, st_geographyfromtext('POINT('||d_lng||' '||d_lat||')'))*100)/100 as dist, concat(w_id,'-',REPLACE(regexp_replace(trim(lower(name)), '[[:punct:]]', '','g'), ' ', '-')) as uri 
   from poibase where ST_DWithin(geog, st_geographyfromtext('POINT('||d_lng||' '||d_lat||')'), 10000) and name ilike '%'||$3||'%'
   order by dist limit 30) 
   LOOP  
     RETURN NEXT rec;  
   END LOOP;  
  ELSE
-  FOR rec IN (select w_id, name, t_id, lat, lng, round(st_distance(geog, st_geographyfromtext('POINT('||d_lng||' '||d_lat||')'))*100)/100 as dist, concat(w_id,'-',REPLACE(regexp_replace(trim(lower(name)), '[[:punct:]]', '','g'), ' ', '-')) as uri 
+  FOR rec IN (select w_id, w_id_int, name, cat, lat, lng, round(st_distance(geog, st_geographyfromtext('POINT('||d_lng||' '||d_lat||')'))*100)/100 as dist, concat(w_id,'-',REPLACE(regexp_replace(trim(lower(name)), '[[:punct:]]', '','g'), ' ', '-')) as uri 
   from poibase where ST_DWithin(geog, st_geographyfromtext('POINT('||d_lng||' '||d_lat||')'), 1000) 
   order by dist limit 60) 
   LOOP  
